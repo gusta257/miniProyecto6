@@ -37,11 +37,14 @@ def seleccion(pob, resp):
     for i in pob:
         prob = resp[pob.index(i)]/sum(resp)
         probabilidad.append(prob)
+    elegido = random.choices(pob, probabilidad)
     print(probabilidad)
-
-
-pob = poblacionInicial1(10, 0,30)
-respuestas, z,x,c = calcularFitness1(pob)
+    print("Pareja elegida:",elegido[0])
+    print("Probabilidad de eleccion:",probabilidad[pob.index(elegido[0])])
+    
+pob = poblacionInicial1(5, 0,30)
 print(pob)
+respuestas, z,x,c = calcularFitness1(pob)
+
 print(respuestas)
 seleccion(pob,respuestas)
