@@ -2,6 +2,7 @@
 # Andres Urizar
 import numpy as np
 import random
+from itertools import combinations
 
 def poblacionInicial1(n, limiteI, limiteS):
     poblacion = []
@@ -38,13 +39,59 @@ def seleccion(pob, resp):
         prob = resp[pob.index(i)]/sum(resp)
         probabilidad.append(prob)
     elegido = random.choices(pob, probabilidad)
-    print(probabilidad)
-    print("Pareja elegida:",elegido[0])
-    print("Probabilidad de eleccion:",probabilidad[pob.index(elegido[0])])
+    indice_selec = pob.index(elegido[0])
+    primerselec = pob.pop(indice_selec)
+    primerprob = probabilidad.pop(indice_selec)
+    elegido2 = random.choices(pob,probabilidad)
+    pob.insert(indice_selec,primerselec)
+    probabilidad.insert(indice_selec,primerprob)
+    # print("Pareja elegida:",elegido[0])
+    # print("Probabilidad de eleccion:",probabilidad[indice_selec])
+    # print("Pareja elegida 2:",elegido2[0])
+    # print("Probabilidad de eleccion:",probabilidad[pob.index(elegido2[0])])
+    return elegido[0],elegido2[0]
     
-pob = poblacionInicial1(5, 0,30)
-print(pob)
-respuestas, z,x,c = calcularFitness1(pob)
+cont = 0
+pob = poblacionInicial1(100, 0,30)
 
-print(respuestas)
-seleccion(pob,respuestas)
+while cont <= 1000:
+   
+    respuestas, z,x,c = calcularFitness1(pob)
+
+    print(respuestas)
+    pareja1,pareja2 = seleccion(pob,respuestas)
+    progenitores =  np.concatenate((pareja1,pareja2))
+
+    descendencia = combinations(progenitores,2)
+    descendencia = list(descendencia)
+
+    print("Descendencia",descendencia)
+    desctemp = []
+
+    for x in descendencia:
+        temp = [x[0],x[1]]
+        desctemp.append(temp)
+
+    descendencia = desctemp
+    print("Descendencia",descendencia)
+
+    for hijo in descendencia:
+        prob_mutacion = random.uniform(0,1)
+        valor_indice = random.randint(0,len(descendencia)-1)
+
+        print("Descendencia antes",descendencia)
+
+        if prob_mutacion <= 0.1:
+            descendencia[valor_indice][0] += 1
+            descendencia[valor_indice][1] += 1
+
+        print("Descendencia despues",descendencia)
+
+    pob = descendencia
+    
+
+    cont+=1
+
+print("Primer resultado de la poblacion",descendencia)
+
+
