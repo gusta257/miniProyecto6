@@ -5,4 +5,6 @@
 
 # Ejecucion
 1. Clonar repositorio
-2. Correr en consola python ./main.py
+2. Correr en consola:
+
+       python ./main.py
