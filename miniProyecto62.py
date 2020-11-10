@@ -4,18 +4,19 @@ import numpy as np
 import random
 from itertools import combinations
 
-def poblacionInicial1(n, limiteI, limiteS):
+def poblacionInicial2(n, limiteI, limiteS):
     poblacion = []
     while(len(poblacion) < n):
         genX1 = random.randint(limiteI, limiteS)
         genX2 = random.randint(limiteI, limiteS)
-        cond = genX1 + 2*genX2
-        if(cond <= 30):
-            poblacion.append([genX1,genX2])
+        cond1 = 3*genX1 + 2*genX2
+        if(cond1 <= 18):
+            if(genX1 <= 4 and genX2*2 <= 12):
+                poblacion.append([genX1,genX2])
     return poblacion
     
 def funcionFitness1(x1, x2):
-    return 15*x1 + 30*x2 + 4*x1*x2 - 2*x1**2 - 4*x2**2
+    return 3*x1+5*x2
 
 
 def calcularFitness1(poblacion):
@@ -44,9 +45,7 @@ def seleccion(pob, resp):
     
 
 
-
-
-def ejecucion1(pob):
+def ejecucion2(pob):
     cont = 0
     maximo = 0
     while cont != 100:
@@ -81,17 +80,25 @@ def ejecucion1(pob):
 
             if prob_mutacion <= 0.8:
                 hijo[valor_indice] += 1
+            '''
+            cond1 = 3*genX1 + 2*genX2
+            if(cond1 <= 18):
+                if(genX1 <= 4 and genX2*2 <= 12):
+                    poblacion.append([genX1,genX2])
+            '''
 
-            if (hijo[0]+(2*hijo[1])) <= 30:
-                pob.append(hijo)
+            if (3*hijo[0]+(2*hijo[1])) <= 18:
+                if(hijo[0] <= 4 and hijo[1]*2 <= 12):
+                    pob.append(hijo)
 
 
     res_final, val_max_final, x_final, c_final = calcularFitness1(descendencia)
 
     final = []
     for x in descendencia:
-        if(x[0]+(2*x[1])<=30):
-            final.append(x)
+        if(3*x[0]+(2*x[1])<=18):
+            if(x[0] <= 4 and x[1]*2 <= 12):
+                final.append(x)
 
     res_final, val_max_final, x_final, c_final = calcularFitness1(final)
     indice_final = res_final.index(val_max_final)
@@ -101,5 +108,6 @@ def ejecucion1(pob):
     print("Respuesta:",val_max_final)
 
 
-#pob = poblacionInicial1(1000, 0,30)
-#ejecucion(pob)
+
+#pob = poblacionInicial21(1000, 0,30)
+#ejecucion2(pob)
